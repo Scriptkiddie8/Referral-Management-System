@@ -1,0 +1,21 @@
+import express from "express";
+import cors from "cors";
+import candidateRoutes from "./routes/candidate.routes.js";
+import errorHandler from "./middleware/errorHandler.js";
+import path from "path";
+
+const app = express();
+
+app.use(express.json());
+app.use(cors());
+
+app.use("/api/candidates", candidateRoutes);
+app.use("/uploads", express.static("uploads"));
+
+app.use(errorHandler);
+
+app.get("/", (req, res) => {
+  res.send("Candidate referral System");
+});
+
+export default app;

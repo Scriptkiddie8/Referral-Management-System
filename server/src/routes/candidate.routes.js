@@ -4,7 +4,6 @@ import {
   getAllCandidates,
   updateCandidateStatus,
 } from "../controllers/candidate.controller.js";
-import upload from "../middleware/upload.js";
 import protect from "../middleware/auth.js";
 import uploadResume from "../middleware/uploadResume.js";
 const router = express.Router();

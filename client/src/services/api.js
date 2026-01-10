@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
-  //   baseURL: "https://backend-referral-workoai.vercel.app/api",
+  //   baseURL: "http://localhost:5000/api",
+  baseURL: "https://referral-management-system-iq74.onrender.com",
 });
 
 // Add a request interceptor to attach token

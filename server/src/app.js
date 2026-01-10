@@ -7,7 +7,7 @@ import authRoutes from "./routes/auth.routes.js";
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "https://referral-workoai.vercel.app/" }));
 
 app.use("/api/candidates", candidateRoutes);
 app.use("/uploads", express.static("uploads"));

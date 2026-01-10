@@ -13,12 +13,19 @@ export const createCandidate = async (req, res, next) => {
 
     const { name, email, phone, jobTitle } = req.body;
 
+    let resumeUrl = null;
+    if (req.file) {
+      // req.file.path is like "https://res.cloudinary.com/.../image/upload/vxxx/..."
+      // req.file.filename is like "resumes/YourFile_123456"
+      resumeUrl = `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/raw/upload/${req.file.filename}.pdf`;
+    }
+
     const candidate = await Candidate.create({
       name,
       email,
       phone,
       jobTitle,
-      resumeUrl: req.file ? req.file.path : null,
+      resumeUrl,
     });
 
     res.status(201).json({

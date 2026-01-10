@@ -39,7 +39,7 @@ const CandidateCard = ({ candidate, onStatusUpdate }) => {
 
       {candidate.resumeUrl && (
         <a
-          href={`http://localhost:5000/${candidate.resumeUrl}`}
+          href={`https://referral-management-system-iq74.onrender.com/${candidate.resumeUrl}`}
           target="_blank"
           rel="noreferrer"
           className="inline-block mt-3 text-blue-600 text-sm font-medium hover:underline"

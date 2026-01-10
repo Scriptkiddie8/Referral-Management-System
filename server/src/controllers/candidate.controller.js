@@ -2,6 +2,15 @@ import Candidate from "../models/Candidate.js";
 
 export const createCandidate = async (req, res, next) => {
   try {
+    console.log("Cloudinary Cloud Name:", process.env.CLOUDINARY_CLOUD_NAME);
+    console.log(
+      "Cloudinary API Key:",
+      process.env.CLOUDINARY_API_KEY ? "ok" : "missing"
+    );
+
+    // 🔹 LOG the uploaded file info
+    console.log("Uploaded file object:", req.file);
+
     const { name, email, phone, jobTitle } = req.body;
 
     const candidate = await Candidate.create({

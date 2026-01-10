@@ -6,10 +6,10 @@ import {
 } from "../controllers/candidate.controller.js";
 import upload from "../middleware/upload.js";
 import protect from "../middleware/auth.js";
-
+import uploadResume from "../middleware/uploadResume.js";
 const router = express.Router();
 
-router.post("/", upload.single("resume"), createCandidate);
+router.post("/", uploadResume.single("resume"), createCandidate);
 router.get("/", protect, getAllCandidates);
 router.put("/:id/status", protect, updateCandidateStatus);
 

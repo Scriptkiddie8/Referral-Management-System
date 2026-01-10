@@ -15,10 +15,8 @@ API.interceptors.request.use((config) => {
 });
 
 export const fetchCandidates = () => API.get("/candidates");
-export const createCandidate = (formData) =>
-  API.post("/candidates", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+export const createCandidate = (formData) => API.post("/candidates", formData);
+
 export const updateCandidateStatus = (id, status) =>
   API.put(`/candidates/${id}/status`, { status });
 

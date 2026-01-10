@@ -8,6 +8,7 @@ import { useState } from "react";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Refer from "./pages/Refer";
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -20,6 +21,10 @@ const App = () => {
         <Route
           path="/dashboard"
           element={token ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/refer"
+          element={token ? <Refer /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>

@@ -1,46 +1,71 @@
-import logo from "../assets/logo.png";
+import { NavLink } from "react-router-dom";
+import logo from "../assets/logo.webp";
 
 const Layout = ({ title, children }) => {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="h-screen bg-gray-100 flex overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg flex flex-col">
-        {/* Logo */}
-        <div className="p-6 flex items-center gap-2">
-          <img src={logo} alt="Worko Logo" className="h-10 w-auto" />
-          <span className="text-2xl font-bold text-blue-600 hidden md:block">
-            Worko Referral
-          </span>
+      <aside className="w-64 bg-white shadow-lg flex flex-col justify-between h-screen">
+        {/* Top Section */}
+        <div>
+          {/* Logo */}
+          <div className="p-6 flex justify-center">
+            <img src={logo} alt="Worko Logo" className="h-10" />
+          </div>
+
+          {/* Navigation */}
+          <nav className="px-4 space-y-2 mt-6">
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                `block px-4 py-2 rounded-lg font-medium transition ${
+                  isActive
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-gray-700 hover:bg-blue-50"
+                }`
+              }
+            >
+              Dashboard
+            </NavLink>
+
+            <NavLink
+              to="/refer"
+              className={({ isActive }) =>
+                `block px-4 py-2 rounded-lg font-medium transition ${
+                  isActive
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-gray-700 hover:bg-blue-50"
+                }`
+              }
+            >
+              Referral Form
+            </NavLink>
+          </nav>
         </div>
 
-        {/* Sidebar Navigation */}
-        <nav className="px-4 space-y-2 mt-4 flex-1">
-          <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 font-medium transition">
-            Dashboard
-          </button>
-          <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 font-medium transition">
-            Candidates
-          </button>
-          <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 font-medium transition">
-            Add Candidate
-          </button>
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 p-8">
-        {/* Topbar */}
-        <div className="bg-white p-4 rounded-xl shadow mb-6 flex justify-between items-center">
-          <h1 className="text-xl font-semibold text-gray-800">{title}</h1>
+        {/* Logout (Bottom) */}
+        <div className="p-4">
           <button
-            onClick={() => {
-              localStorage.removeItem("token");
-              window.location.href = "/login";
-            }}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+            onClick={handleLogout}
+            className="w-full bg-red-50 text-red-600 px-4 py-2 rounded-lg font-medium hover:bg-red-100 transition"
           >
             Logout
           </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 p-8 overflow-y-auto">
+        {/* Topbar */}
+        <div className="bg-white p-4 rounded-xl shadow mb-6">
+          <h1 className="text-xl font-bold text-gray-800 flex justify-center">
+            {title}
+          </h1>
         </div>
 
         {/* Page Content */}

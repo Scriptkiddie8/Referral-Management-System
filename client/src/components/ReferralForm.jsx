@@ -12,6 +12,7 @@ const ReferralForm = ({ onSuccess }) => {
   const [resume, setResume] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -25,6 +26,7 @@ const ReferralForm = ({ onSuccess }) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setSuccess(false);
 
     try {
       const formData = new FormData();
@@ -38,10 +40,11 @@ const ReferralForm = ({ onSuccess }) => {
 
       setForm({ name: "", email: "", phone: "", jobTitle: "" });
       setResume(null);
+      setSuccess(true);
 
-      onSuccess();
+      onSuccess && onSuccess();
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong");
+      setError(err.response?.data?.message || err.message);
     } finally {
       setLoading(false);
     }
@@ -98,6 +101,12 @@ const ReferralForm = ({ onSuccess }) => {
         onChange={handleFileChange}
         className="w-full text-sm text-gray-600"
       />
+
+      {success && (
+        <p className="text-green-600 text-sm font-medium">
+          Referral submitted successfully
+        </p>
+      )}
 
       <button
         type="submit"

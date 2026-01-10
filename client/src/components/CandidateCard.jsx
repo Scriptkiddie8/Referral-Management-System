@@ -1,5 +1,11 @@
 import { updateCandidateStatus } from "../services/api";
 
+const statusColorMap = {
+  Pending: "text-yellow-400",
+  Reviewed: "text-red-400",
+  Hired: "text-green-400",
+};
+
 const CandidateCard = ({ candidate, onStatusUpdate }) => {
   const handleChange = async (e) => {
     await updateCandidateStatus(candidate._id, e.target.value);
@@ -7,37 +13,36 @@ const CandidateCard = ({ candidate, onStatusUpdate }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition flex flex-col justify-between">
-      {/* Name */}
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">
-        {candidate.name}
-      </h3>
+    <div className="bg-white p-4 rounded-xl shadow hover:shadow-md transition">
+      <h3 className="text-lg font-semibold text-gray-800">{candidate.name}</h3>
 
-      {/* Job & Status */}
-      <p className="text-gray-700 mb-1">
-        <span className="font-medium">Job:</span> {candidate.jobTitle}
-      </p>
-      <p className="text-gray-700 mb-3">
-        <span className="font-medium">Status:</span> {candidate.status}
+      <p className="text-sm text-gray-600 mt-1">
+        <strong>Job:</strong> {candidate.jobTitle}
       </p>
 
-      {/* Status Selector */}
+      <p className="text-sm mt-2">
+        <strong>Status:</strong>{" "}
+        <span className={`font-semibold ${statusColorMap[candidate.status]}`}>
+          {candidate.status}
+        </span>
+      </p>
+
       <select
         value={candidate.status}
         onChange={handleChange}
-        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-2"
+        className="mt-3 w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <option value="Pending">Pending</option>
         <option value="Reviewed">Reviewed</option>
         <option value="Hired">Hired</option>
       </select>
 
-      {/* Resume Link */}
       {candidate.resumeUrl && (
         <a
           href={`http://localhost:5000/${candidate.resumeUrl}`}
           target="_blank"
-          className="text-blue-600 hover:underline text-sm"
+          rel="noreferrer"
+          className="inline-block mt-3 text-blue-600 text-sm font-medium hover:underline"
         >
           View Resume
         </a>

@@ -1,7 +1,8 @@
+import Layout from "../components/Layout";
 import ReferralForm from "../components/ReferralForm";
 import CandidateCard from "../components/CandidateCard";
-import useCandidates from "../hooks/useCandidates";
 import SearchBar from "../components/SearchBar";
+import useCandidates from "../hooks/useCandidates";
 import { useState } from "react";
 
 const Dashboard = () => {
@@ -9,22 +10,7 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
 
-  if (loading)
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <h2 className="text-xl font-semibold text-gray-700">Loading...</h2>
-      </div>
-    );
-
-  const handleLogout = () => {
-    localStorage.removeItem("token"); // remove JWT
-    window.location.href = "/login"; // redirect to login page
-  };
-
-  const total = candidates.length;
-  const pending = candidates.filter((c) => c.status === "Pending").length;
-  const reviewed = candidates.filter((c) => c.status === "Reviewed").length;
-  const hired = candidates.filter((c) => c.status === "Hired").length;
+  if (loading) return <p>Loading...</p>;
 
   const filteredCandidates = candidates.filter((c) => {
     const matchJob = c.jobTitle.toLowerCase().includes(search.toLowerCase());
@@ -32,73 +18,50 @@ const Dashboard = () => {
     return matchJob && matchStatus;
   });
 
+  const total = candidates.length;
+  const pending = candidates.filter((c) => c.status === "Pending").length;
+  const reviewed = candidates.filter((c) => c.status === "Reviewed").length;
+  const hired = candidates.filter((c) => c.status === "Hired").length;
+
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">
-          Candidate Referrals
-        </h1>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
-        >
-          Logout
-        </button>
+    <Layout title="Dashboard">
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {[
+          { label: "Total", value: total, color: "text-blue-500" },
+          { label: "Pending", value: pending, color: "text-yellow-500" },
+          { label: "Reviewed", value: reviewed, color: "text-red-500" },
+          { label: "Hired", value: hired, color: "text-green-500" },
+        ].map(({ label, value, color }) => (
+          <div
+            key={label}
+            className="bg-white p-5 rounded-xl shadow hover:shadow-md transition text-center"
+          >
+            <p className="text-gray-500 text-sm font-medium">{label}</p>
+            <p className={`text-3xl font-bold mt-1 ${color}`}>{value}</p>
+          </div>
+        ))}
       </div>
 
-      {/* Referral Form */}
-      <div className="mb-6">
-        <ReferralForm onSuccess={loadCandidates} />
-      </div>
+      {/* Search */}
+      <SearchBar
+        search={search}
+        setSearch={setSearch}
+        status={status}
+        setStatus={setStatus}
+      />
 
-      {/* Search Bar */}
-      <div className="mb-6">
-        <SearchBar
-          search={search}
-          setSearch={setSearch}
-          status={status}
-          setStatus={setStatus}
-        />
+      {/* Candidate Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
+        {filteredCandidates.map((candidate) => (
+          <CandidateCard
+            key={candidate._id}
+            candidate={candidate}
+            onStatusUpdate={loadCandidates}
+          />
+        ))}
       </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-xl shadow text-center">
-          <h4 className="text-gray-500 font-medium">Total Referred</h4>
-          <p className="text-2xl font-bold text-gray-800 mt-2">{total}</p>
-        </div>
-        <div className="bg-white p-4 rounded-xl shadow text-center">
-          <h4 className="text-gray-500 font-medium">Pending</h4>
-          <p className="text-2xl font-bold text-yellow-500 mt-2">{pending}</p>
-        </div>
-        <div className="bg-white p-4 rounded-xl shadow text-center">
-          <h4 className="text-gray-500 font-medium">Reviewed</h4>
-          <p className="text-2xl font-bold text-blue-500 mt-2">{reviewed}</p>
-        </div>
-        <div className="bg-white p-4 rounded-xl shadow text-center">
-          <h4 className="text-gray-500 font-medium">Hired</h4>
-          <p className="text-2xl font-bold text-green-500 mt-2">{hired}</p>
-        </div>
-      </div>
-
-      {/* Candidates List */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCandidates.length === 0 ? (
-          <p className="text-gray-500 text-center col-span-full">
-            No candidates found.
-          </p>
-        ) : (
-          filteredCandidates.map((candidate) => (
-            <CandidateCard
-              key={candidate._id}
-              candidate={candidate}
-              onStatusUpdate={loadCandidates}
-            />
-          ))
-        )}
-      </div>
-    </div>
+    </Layout>
   );
 };
 

@@ -6,12 +6,22 @@ export const createCandidate = async (req, res, next) => {
 
     const { name, email, phone, jobTitle } = req.body;
 
+    let resumeUrl = null;
+
+    if (req.file) {
+      resumeUrl = cloudinary.url(req.file.filename, {
+        resource_type: "image",
+        format: "pdf",
+        flags: "inline", // 🔥 THIS IS THE KEY
+      });
+    }
+
     const candidate = await Candidate.create({
       name,
       email,
       phone,
       jobTitle,
-      resumeUrl: req.file ? req.file.path : null, // ✅ RAW URL directly
+      resumeUrl,
     });
 
     res.status(201).json({

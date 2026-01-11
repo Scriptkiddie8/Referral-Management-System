@@ -8,9 +8,10 @@ const storage = new CloudinaryStorage({
   params: {
     folder: "resumes",
     resource_type: "raw",
+    format: "pdf", // ✅ THIS IS THE MISSING LINE
     allowed_formats: ["pdf"],
     public_id: (req, file) => {
-      const name = file.originalname.split(".")[0].replace(/\s+/g, "_");
+      const name = file.originalname.replace(".pdf", "").replace(/\s+/g, "_");
       return `${name}_${Date.now()}`;
     },
   },

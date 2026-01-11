@@ -7,16 +7,19 @@ export const createCandidate = async (req, res, next) => {
 
     const { name, email, phone, jobTitle } = req.body;
 
-    let resumeUrl = null;
+    // let resumeUrl = null;
 
-    if (req.file) {
-      resumeUrl = cloudinary.url(req.file.filename, {
-        resource_type: "image",
-        format: "pdf",
-        flags: "inline", // 🔥 THIS IS THE KEY
-      });
-    }
+    // if (req.file) {
+    //   resumeUrl = cloudinary.url(req.file.filename, {
+    //     resource_type: "image",
+    //     format: "pdf",
+    //     flags: "inline", // 🔥 THIS IS THE KEY
+    //   });
+    // }
 
+    const resumeUrl = req.file
+      ? req.file.path.replace("/upload/", "/upload/fl_inline/")
+      : null;
     const candidate = await Candidate.create({
       name,
       email,

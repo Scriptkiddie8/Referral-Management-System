@@ -1,5 +1,4 @@
 import Candidate from "../models/Candidate.js";
-import { v2 as cloudinary } from "cloudinary";
 
 export const createCandidate = async (req, res, next) => {
   try {
@@ -7,25 +6,12 @@ export const createCandidate = async (req, res, next) => {
 
     const { name, email, phone, jobTitle } = req.body;
 
-    // let resumeUrl = null;
-
-    // if (req.file) {
-    //   resumeUrl = cloudinary.url(req.file.filename, {
-    //     resource_type: "image",
-    //     format: "pdf",
-    //     flags: "inline", // 🔥 THIS IS THE KEY
-    //   });
-    // }
-
-    const resumeUrl = req.file
-      ? req.file.path.replace("/upload/", "/upload/fl_inline/")
-      : null;
     const candidate = await Candidate.create({
       name,
       email,
       phone,
       jobTitle,
-      resumeUrl,
+      resumeUrl: req.file ? req.file.secure_url : null,
     });
 
     res.status(201).json({

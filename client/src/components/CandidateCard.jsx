@@ -40,11 +40,10 @@ const CandidateCard = ({ candidate, onStatusUpdate }) => {
       {candidate.resumeUrl && (
         <a
           href={candidate.resumeUrl}
-          target="_blank"
-          rel="noreferrer"
+          download
           className="inline-block mt-3 text-blue-600 text-sm font-medium hover:underline"
         >
-          View Resume
+          Download Resume
         </a>
       )}
     </div>

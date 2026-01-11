@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  //   baseURL: "http://localhost:5000/api",
-  baseURL: "https://referral-management-system-iq74.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 // Add a request interceptor to attach token

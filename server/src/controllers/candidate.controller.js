@@ -2,30 +2,16 @@ import Candidate from "../models/Candidate.js";
 
 export const createCandidate = async (req, res, next) => {
   try {
-    console.log("Cloudinary Cloud Name:", process.env.CLOUDINARY_CLOUD_NAME);
-    console.log(
-      "Cloudinary API Key:",
-      process.env.CLOUDINARY_API_KEY ? "ok" : "missing"
-    );
-
-    // 🔹 LOG the uploaded file info
     console.log("Uploaded file object:", req.file);
 
     const { name, email, phone, jobTitle } = req.body;
-
-    let resumeUrl = null;
-    if (req.file) {
-      // req.file.path is like "https://res.cloudinary.com/.../image/upload/vxxx/..."
-      // req.file.filename is like "resumes/YourFile_123456"
-      resumeUrl = `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/raw/upload/${req.file.filename}.pdf`;
-    }
 
     const candidate = await Candidate.create({
       name,
       email,
       phone,
       jobTitle,
-      resumeUrl,
+      resumeUrl: req.file ? req.file.path : null, // ✅ RAW URL directly
     });
 
     res.status(201).json({

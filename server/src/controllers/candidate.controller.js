@@ -1,4 +1,5 @@
 import Candidate from "../models/Candidate.js";
+import { v2 as cloudinary } from "cloudinary";
 
 export const createCandidate = async (req, res, next) => {
   try {

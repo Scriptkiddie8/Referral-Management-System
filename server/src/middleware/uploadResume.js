@@ -6,12 +6,14 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "resumes",
-    resource_type: "image", // 🔥 CHANGE THIS
-    format: "pdf", // 🔥 FORCE PDF
-    allowed_formats: ["pdf"],
+    resource_type: "raw",
+    use_filename: true, // 🔥 keep original name
+    unique_filename: true,
     public_id: (req, file) => {
-      const name = file.originalname.replace(".pdf", "").replace(/\s+/g, "_");
-      return `${name}_${Date.now()}`;
+      const baseName = file.originalname
+        .replace(/\s+/g, "_")
+        .replace(".pdf", "");
+      return `${baseName}_${Date.now()}.pdf`; // 🔥 FORCE EXTENSION
     },
   },
 });

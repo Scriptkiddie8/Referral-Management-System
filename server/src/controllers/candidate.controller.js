@@ -11,7 +11,7 @@ export const createCandidate = async (req, res, next) => {
       email,
       phone,
       jobTitle,
-      resumeUrl: req.file ? req.file.secure_url : null,
+      resumeUrl: req.file ? req.file.path : null,
     });
 
     res.status(201).json({
